@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevRoadmap OS | 2026</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        gray: {
+                            850: '#1f2937',
+                            900: '#111827',
+                            950: '#0b0f19',
+                        },
+                        brand: {
+                            500: '#6366f1', // Indigo
+                            600: '#4f46e5',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111827; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #374151; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4b5563; 
+        }
+
+        /* Smooth Transitions & Animations */
+        body {
+            background-color: #0b0f19;
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+        .fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.5s ease-in-out;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        .checkbox-custom {
+            appearance: none;
+            background-color: transparent;
+            margin: 0;
+            font: inherit;
+            color: currentColor;
+            width: 1.15em;
+            height: 1.15em;
+            border: 2px solid #4b5563;
+            border-radius: 0.25em;
+            display: grid;
+            place-content: center;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .checkbox-custom::before {
+            content: "";
+            width: 0.65em;
+            height: 0.65em;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em white;
+            background-color: white;
+            transform-origin: center;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+        .checkbox-custom:checked {
+            background-color: #10b981;
+            border-color: #10b981;
+        }
+        .checkbox-custom:checked::before {
+            transform: scale(1);
+        }
+
+        /* Accordion transition */
+        .accordion-content {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .accordion-content.expanded {
+            max-height: 2000px; /* Arbitrary large number */
+            opacity: 1;
+        }
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+        .expanded + .accordion-icon, .expanded-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Keyboard shortcut styling */
+        .kbd {
+            background-color: #374151;
+            border: 1px solid #4b5563;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body class="antialiased h-screen flex overflow-hidden">
+
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-950/80 backdrop-blur-md transition-opacity duration-300">
+        <div class="bg-gray-900 border border-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-md fade-in">
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-brand-500/20 text-brand-500 mb-4">
+                    <i class="fa-solid fa-rocket text-2xl"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-white">DevRoadmap OS</h1>
+                <p class="text-gray-400 mt-2">Enter credentials to access your tracker</p>
+            </div>
+            <form id="login-form" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-1">Username</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-user text-gray-500"></i>
+                        </div>
+                        <input type="text" id="username" class="block w-full pl-10 pr-3 py-2 border border-gray-700 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors" placeholder="admin" required>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-1">Password</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-lock text-gray-500"></i>
+                        </div>
+                        <input type="password" id="password" class="block w-full pl-10 pr-3 py-2 border border-gray-700 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors" placeholder="roadmap2026" required>
+                    </div>
+                </div>
+                <div id="login-error" class="text-red-400 text-sm hidden bg-red-400/10 p-2 rounded border border-red-400/20">Invalid credentials. Try admin / roadmap2026</div>
+                <button type="submit" class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-brand-600 hover:bg-brand-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-brand-500 transition-colors">
+                    Access Dashboard
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD (Hidden initially) -->
+    <div id="dashboard" class="hidden w-full h-full flex">
+        
+        <!-- SIDEBAR -->
+        <aside class="w-64 bg-gray-900 border-r border-gray-800 flex flex-col hidden md:flex z-20">
+            <div class="h-16 flex items-center px-6 border-b border-gray-800">
+                <i class="fa-solid fa-layer-group text-brand-500 mr-3 text-xl"></i>
+                <span class="text-lg font-bold tracking-wide text-white">DevRoadmap</span>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto py-6 px-4">
+                <!-- Overall Progress -->
+                <div class="bg-gray-800/50 rounded-xl p-4 mb-6 border border-gray-700/50 flex flex-col items-center text-center">
+                    <div class="relative w-24 h-24 mb-3">
+                        <svg class="w-full h-full" viewBox="0 0 100 100">
+                            <circle class="text-gray-700 stroke-current" stroke-width="8" cx="50" cy="50" r="40" fill="transparent"></circle>
+                            <circle id="sidebar-progress-ring" class="text-brand-500 progress-ring__circle stroke-current" stroke-width="8" stroke-linecap="round" cx="50" cy="50" r="40" fill="transparent" stroke-dasharray="251.2" stroke-dashoffset="251.2"></circle>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center flex-col">
+                            <span id="sidebar-progress-text" class="text-xl font-bold text-white">0%</span>
+                        </div>
+                    </div>
+                    <span class="text-xs font-medium text-gray-400 uppercase tracking-wider">Total Progress</span>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="space-y-1" id="sidebar-nav">
+                    <!-- Nav items injected via JS -->
+                </nav>
+            </div>
+
+            <div class="p-4 border-t border-gray-800">
+                <button id="logout-btn" class="w-full flex items-center px-4 py-2 text-sm font-medium text-gray-400 rounded-lg hover:bg-gray-800 hover:text-white transition-colors">
+                    <i class="fa-solid fa-right-from-bracket mr-3"></i> Log out
+                </button>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 flex flex-col h-full bg-gray-950 relative">
+            
+            <!-- HEADER -->
+            <header class="h-16 flex items-center justify-between px-6 bg-gray-900/80 backdrop-blur-md border-b border-gray-800 z-10 sticky top-0">
+                <div class="flex items-center flex-1">
+                    <button id="mobile-menu-btn" class="md:hidden mr-4 text-gray-400 hover:text-white">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                    <!-- Search Bar -->
+                    <div class="max-w-md w-full relative group">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-search text-gray-500 group-focus-within:text-brand-500 transition-colors"></i>
+                        </div>
+                        <input type="text" id="search-input" class="block w-full pl-10 pr-12 py-2 border border-gray-700 rounded-lg bg-gray-800/50 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all sm:text-sm" placeholder="Search topics, resources...">
+                        <div class="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
+                            <span class="kbd">/</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center ml-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-500 to-purple-500 flex items-center justify-center text-sm font-bold shadow-lg">
+                            A
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- SCROLLABLE CONTENT -->
+            <div class="flex-1 overflow-y-auto p-6 lg:p-10 scroll-smooth" id="main-scroll-area">
+                
+                <!-- Analytics Panel -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 fade-in" style="animation-delay: 0.1s;">
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-400">Total Tasks</p>
+                                <p class="text-3xl font-bold text-white mt-1" id="stat-total-tasks">0</p>
+                            </div>
+                            <div class="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500 text-xl">
+                                <i class="fa-solid fa-list-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-400">Completed Points</p>
+                                <p class="text-3xl font-bold text-white mt-1"><span id="stat-completed-points">0</span><span class="text-lg text-gray-500"> / <span id="stat-total-points">0</span></span></p>
+                            </div>
+                            <div class="w-12 h-12 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500 text-xl">
+                                <i class="fa-solid fa-check-double"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-400">Mastery Level</p>
+                                <p class="text-3xl font-bold text-white mt-1" id="stat-mastery">Novice</p>
+                            </div>
+                            <div class="w-12 h-12 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-500 text-xl">
+                                <i class="fa-solid fa-trophy"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Roadmap Container -->
+                <div id="roadmap-container" class="space-y-8 pb-20">
+                    <!-- Content injected via JS -->
+                </div>
+
+                <!-- Empty State (Search) -->
+                <div id="empty-state" class="hidden flex-col items-center justify-center py-20 text-center">
+                    <i class="fa-solid fa-ghost text-6xl text-gray-700 mb-4"></i>
+                    <h3 class="text-xl font-medium text-gray-300">No topics found</h3>
+                    <p class="text-gray-500 mt-2">Try a different search term.</p>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="mobile-overlay" class="fixed inset-0 bg-gray-950/80 backdrop-blur-sm z-30 hidden transition-opacity"></div>
+
+<script>
+/**
+ * --- DATA DEFINITION ---
+ * Based on the provided prompt (Phase 1, 2, 3)
+ * Weights: L1/Must Know/Core = 3, L2/Important = 2, L3/Good to Know/Advanced = 1
+ */
+const roadmapData = [
+    {
+        id: "phase1",
+        title: "Phase 1 — CS Fundamentals + LLD + System Design",
+        subtitle: "Now → April",
+        color: "blue",
+        modules: [
+            {
+                id: "dbms",
+                title: "DBMS (Weeks 1–2)",
+                icon: "fa-database",
+                topics: [
+                    { id: "dbms-1",  title: "What is DBMS vs RDBMS vs file system, components, data models", weight: 3, level: "L1 - Must Know" },
+                    { id: "dbms-2",  title: "Three-level architecture & data independence", weight: 3, level: "L1 - Must Know" },
+                    { id: "dbms-3",  title: "DBMS languages (DDL, DML, DCL, TCL)", weight: 3, level: "L1 - Must Know" },
+                    { id: "dbms-4",  title: "Keys (Primary, Foreign, Candidate, Super, Composite, Surrogate)", weight: 3, level: "L1 - Must Know" },
+                    { id: "dbms-5",  title: "ER Model & Relational mapping", weight: 3, level: "L1 - Must Know" },
+                    { id: "dbms-6",  title: "SQL: SELECT, JOINs, GROUP BY, HAVING, Subqueries", weight: 3, level: "L1 - Must Know" },
+                    { id: "dbms-7",  title: "Normalization (1NF, 2NF, 3NF, BCNF) & functional dependencies", weight: 3, level: "L1 - Must Know" },
+                    { id: "dbms-17", title: "Window functions: ROW_NUMBER, RANK, LAG/LEAD, PARTITION BY, OVER()", weight: 3, level: "L1 - Must Know" },
+                    { id: "dbms-8",  title: "Transactions & ACID properties in depth", weight: 2, level: "L2 - Important" },
+                    { id: "dbms-9",  title: "Concurrency control (2PL, locks, deadlocks, timestamps)", weight: 2, level: "L2 - Important" },
+                    { id: "dbms-10", title: "Isolation levels & anomalies (dirty read, non-repeatable read, phantom read)", weight: 2, level: "L2 - Important" },
+                    { id: "dbms-11", title: "Indexing (B-tree, Hash, clustered/non-clustered, composite index, covering index)", weight: 2, level: "L2 - Important" },
+                    { id: "dbms-12", title: "Query optimization (EXPLAIN ANALYZE, cost estimation, index selection)", weight: 2, level: "L2 - Important" },
+                    { id: "dbms-13", title: "Views, materialized views, stored procedures, triggers", weight: 2, level: "L2 - Important" },
+                    { id: "dbms-18", title: "PostgreSQL internals: MVCC, WAL, VACUUM, autovacuum, reading EXPLAIN output", weight: 2, level: "L2 - Important" },
+                    { id: "dbms-19", title: "Partitioning: Range, Hash, List — horizontal vs vertical, partition pruning", weight: 2, level: "L2 - Important" },
+                    { id: "dbms-20", title: "Connection pooling: PgBouncer, HikariCP, pool exhaustion, sizing", weight: 2, level: "L2 - Important" },
+                    { id: "dbms-14", title: "Relational algebra (Select, Project, Join, Union)", weight: 1, level: "L3 - Good to Know" },
+                    { id: "dbms-15", title: "CAP theorem intro & consistency models (eventual, strong, causal)", weight: 1, level: "L3 - Good to Know" },
+                    { id: "dbms-16", title: "NoSQL types (Document, KV, Column, Graph) — when to use what", weight: 1, level: "L3 - Good to Know" }
+                ],
+                resources: [
+                    { name: "Gate Smashers DBMS", url: "https://www.youtube.com/playlist?list=PLxCzCOWd7aiFAN6I8CuViBuCdJgiOkT2Y" },
+                    { name: "InterviewBit DBMS", url: "https://www.interviewbit.com/dbms-interview-questions/" },
+                    { name: "GFG DBMS notes", url: "https://www.geeksforgeeks.org/dbms/" },
+                    { name: "takeuforward.org", url: "https://takeuforward.org" }
+                ]
+            },
+            {
+                id: "os",
+                title: "OS (Weeks 3–4)",
+                icon: "fa-microchip",
+                topics: [
+                    { id: "os-1",  title: "OS basics (functions, types, kernel vs user space, syscalls)", weight: 3, level: "L1 - Must Know" },
+                    { id: "os-2",  title: "Process (PCB, states, process vs program, fork/exec)", weight: 3, level: "L1 - Must Know" },
+                    { id: "os-3",  title: "Threads (User vs Kernel, multithreading, thread vs process)", weight: 3, level: "L1 - Must Know" },
+                    { id: "os-4",  title: "CPU Scheduling (FCFS, SJF, RR, Priority, Gantt charts)", weight: 3, level: "L1 - Must Know" },
+                    { id: "os-5",  title: "Deadlocks (Conditions, prevention, Banker's algorithm, RAG)", weight: 3, level: "L1 - Must Know" },
+                    { id: "os-6",  title: "Memory management (Paging, segmentation, virtual mem, TLB, LRU, thrashing)", weight: 3, level: "L1 - Must Know" },
+                    { id: "os-7",  title: "Process synchronization (Race condition, Peterson's, Semaphores, Mutex)", weight: 2, level: "L2 - Important" },
+                    { id: "os-8",  title: "Classic sync problems (Producer-Consumer, Dining Philosophers, Readers-Writers)", weight: 2, level: "L2 - Important" },
+                    { id: "os-9",  title: "IPC (Pipes, shared memory, message queues, sockets)", weight: 2, level: "L2 - Important" },
+                    { id: "os-10", title: "File systems (Inode, allocation methods, journaling, VFS)", weight: 2, level: "L2 - Important" },
+                    { id: "os-11", title: "I/O & Disk scheduling (SCAN, C-SCAN, LOOK)", weight: 2, level: "L2 - Important" },
+                    { id: "os-12", title: "Containers vs VMs: cgroups, namespaces, Docker internals vs hypervisors", weight: 2, level: "L2 - Important" },
+                    { id: "os-13", title: "Signals in Linux (SIGKILL, SIGTERM, SIGHUP, signal handlers, signal masks)", weight: 2, level: "L2 - Important" },
+                    { id: "os-14", title: "Context switch cost: kernel stack swap, register save/restore, overhead", weight: 2, level: "L2 - Important" }
+                ],
+                resources: [
+                    { name: "Gate Smashers OS", url: "https://www.youtube.com/playlist?list=PLxCzCOWd7aiGz9donHRrE9I3Mwn6XdP8p" },
+                    { name: "Silberschatz OS Concepts", url: "https://www.os-book.com/" },
+                    { name: "GFG OS", url: "https://www.geeksforgeeks.org/operating-systems/" }
+                ]
+            },
+            {
+                id: "cn",
+                title: "CN (Weeks 5–6)",
+                icon: "fa-network-wired",
+                topics: [
+                    { id: "cn-1",  title: "OSI model (7 layers, protocols, data units)", weight: 3, level: "L1 - Must Know" },
+                    { id: "cn-2",  title: "TCP/IP model & mapping to OSI", weight: 3, level: "L1 - Must Know" },
+                    { id: "cn-3",  title: "IP addressing (IPv4/v6, subnetting, CIDR, NAT)", weight: 3, level: "L1 - Must Know" },
+                    { id: "cn-4",  title: "TCP vs UDP (use cases, reliability mechanisms, when to choose)", weight: 3, level: "L1 - Must Know" },
+                    { id: "cn-5",  title: "TCP Handshakes (3-way setup, 4-way teardown, TIME_WAIT)", weight: 3, level: "L1 - Must Know" },
+                    { id: "cn-6",  title: "HTTP vs HTTPS (status codes, TLS handshake, certificate chain)", weight: 3, level: "L1 - Must Know" },
+                    { id: "cn-7",  title: "DNS (resolution process, record types A/CNAME/MX/TXT, caching, TTL)", weight: 3, level: "L1 - Must Know" },
+                    { id: "cn-12", title: "Long polling vs SSE vs WebSocket — when to use each, trade-offs", weight: 3, level: "L1 - Must Know" },
+                    { id: "cn-8",  title: "HTTP versions (1.1 vs 2 vs 3, head-of-line blocking, QUIC, multiplexing)", weight: 2, level: "L2 - Important" },
+                    { id: "cn-9",  title: "WebSockets (upgrade handshake, full-duplex, heartbeat, reconnection)", weight: 2, level: "L2 - Important" },
+                    { id: "cn-10", title: "CDN & Load Balancers (L4 vs L7, algorithms, sticky sessions, health checks)", weight: 2, level: "L2 - Important" },
+                    { id: "cn-11", title: "Proxies, Cookies, Sessions, JWT (access vs refresh), REST principles", weight: 2, level: "L2 - Important" },
+                    { id: "cn-13", title: "gRPC & Protobuf (vs REST, HTTP/2 multiplexing, streaming types, use cases)", weight: 2, level: "L2 - Important" },
+                    { id: "cn-14", title: "TCP congestion control (slow start, AIMD, Nagle's algorithm, buffer bloat)", weight: 2, level: "L2 - Important" }
+                ],
+                resources: [
+                    { name: "Neso Academy CN", url: "https://www.youtube.com/playlist?list=PLBlnK6fEyqRgMCUAG0XRw78UA8qnv6jEx" },
+                    { name: "Gate Smashers CN", url: "https://www.youtube.com/playlist?list=PLxCzCOWd7aiGFBD2-2joCpWOLUrDLvVV_" },
+                    { name: "GFG CN", url: "https://www.geeksforgeeks.org/computer-network-tutorials/" }
+                ]
+            },
+            {
+                id: "oop",
+                title: "OOP + Design Patterns (Week 7)",
+                icon: "fa-cubes",
+                topics: [
+                    { id: "oop-1", title: "Classes & Objects, Encapsulation, Abstraction", weight: 3, level: "Core OOP" },
+                    { id: "oop-2", title: "Inheritance, Polymorphism (compile-time & runtime, method overriding vs overloading)", weight: 3, level: "Core OOP" },
+                    { id: "oop-3", title: "SOLID principles with examples", weight: 3, level: "Core OOP" },
+                    { id: "oop-7", title: "Interface vs Abstract class — when to use each in Java", weight: 3, level: "Core OOP" },
+                    { id: "oop-8", title: "Composition over Inheritance — why and how", weight: 3, level: "Core OOP" },
+                    { id: "oop-4", title: "Creational Patterns (Singleton, Factory, Abstract Factory, Builder, Prototype)", weight: 2, level: "Patterns" },
+                    { id: "oop-5", title: "Structural Patterns (Adapter, Decorator, Facade, Composite, Bridge)", weight: 2, level: "Patterns" },
+                    { id: "oop-6", title: "Behavioral Patterns (Observer, Strategy, Command, Template Method, Chain of Resp)", weight: 2, level: "Patterns" },
+                    { id: "oop-9", title: "Proxy & Iterator patterns, Java dynamic proxy internals", weight: 2, level: "Patterns" }
+                ],
+                resources: [
+                    { name: "Refactoring.Guru", url: "https://refactoring.guru/design-patterns" },
+                    { name: "GFG OOP", url: "https://www.geeksforgeeks.org/object-oriented-programming-oops-concept-in-java/" }
+                ]
+            },
+            {
+                id: "lld",
+                title: "Low Level Design — LLD (Week 8)",
+                icon: "fa-diagram-project",
+                topics: [
+                    { id: "lld-1",  title: "LLD process: requirements → entities → class diagram → relationships → APIs → code", weight: 3, level: "L1 - Must Know" },
+                    { id: "lld-2",  title: "UML basics: class diagram, sequence diagram, state diagram, activity diagram", weight: 3, level: "L1 - Must Know" },
+                    { id: "lld-3",  title: "Relationships: association, aggregation, composition, inheritance, dependency", weight: 3, level: "L1 - Must Know" },
+                    { id: "lld-4",  title: "Design Parking Lot: slots/vehicles/tickets/payments, Strategy + Factory pattern", weight: 3, level: "L1 - Must Know" },
+                    { id: "lld-5",  title: "Design Vending Machine: inventory, payment, change, State + Strategy pattern", weight: 3, level: "L1 - Must Know" },
+                    { id: "lld-6",  title: "Design Elevator System: controllers, dispatch algorithm, State pattern", weight: 3, level: "L1 - Must Know" },
+                    { id: "lld-7",  title: "Design BookMyShow / Movie Booking: seats, shows, booking, payments", weight: 3, level: "L1 - Must Know" },
+                    { id: "lld-8",  title: "Design a Logger framework: log levels, appenders, filters (Observer + Singleton)", weight: 2, level: "L2 - Important" },
+                    { id: "lld-9",  title: "Design a Rate Limiter class: token bucket, leaky bucket, sliding window", weight: 2, level: "L2 - Important" },
+                    { id: "lld-10", title: "Design Chess / Snake & Ladder: board, players, pieces, turn management", weight: 2, level: "L2 - Important" },
+                    { id: "lld-11", title: "LLD for your own project module: e.g. FastTask notification engine class design", weight: 2, level: "L2 - Important" },
+                    { id: "lld-12", title: "Refactoring anemic model to rich domain model using SOLID + DDD basics", weight: 2, level: "L2 - Important" },
+                    { id: "lld-13", title: "Thread-safety in LLD: immutability, locks, concurrent collections in class design", weight: 1, level: "L3 - Advanced" }
+                ],
+                resources: [
+                    { name: "Awesome LLD (GitHub)", url: "https://github.com/ashishps1/awesome-low-level-design" },
+                    { name: "InterviewBit LLD Questions", url: "https://www.interviewbit.com/low-level-design-interview-questions/" },
+                    { name: "LLD Mastery 2026 Guide", url: "https://www.lowleveldesignmastery.com/blog/low-level-design-interview-questions/" },
+                    { name: "HelloInterview LLD Prep", url: "https://www.hellointerview.com/blog/how-to-prepare-lld" }
+                ]
+            },
+            {
+                id: "java-core",
+                title: "Java Core & JVM (Week 9)",
+                icon: "fa-java",
+                topics: [
+                    { id: "java-1",  title: "JVM architecture: stack, heap, metaspace, method area, class loader subsystem", weight: 3, level: "L1 - Must Know" },
+                    { id: "java-2",  title: "Collections: HashMap internals (buckets, load factor, rehashing), ArrayList vs LinkedList, TreeMap, ConcurrentHashMap", weight: 3, level: "L1 - Must Know" },
+                    { id: "java-3",  title: "Multithreading: synchronized, volatile, ReentrantLock, ExecutorService, thread pools, ForkJoinPool", weight: 3, level: "L1 - Must Know" },
+                    { id: "java-4",  title: "Garbage collection: Serial, Parallel, G1, ZGC — STW pauses, GC roots, finalization", weight: 3, level: "L1 - Must Know" },
+                    { id: "java-5",  title: "Java 8+ features: Stream API, Optional, lambda, method references, CompletableFuture", weight: 3, level: "L1 - Must Know" },
+                    { id: "java-6",  title: "Java Memory Model: happens-before, visibility, reordering, common memory leaks", weight: 2, level: "L2 - Important" },
+                    { id: "java-7",  title: "Generics & type erasure: bounded wildcards, PECS, raw types pitfalls", weight: 2, level: "L2 - Important" },
+                    { id: "java-8",  title: "Exception handling: checked vs unchecked, try-with-resources, custom exceptions, exception chaining", weight: 2, level: "L2 - Important" },
+                    { id: "java-9",  title: "String pool, immutability, StringBuilder vs StringBuffer, intern()", weight: 2, level: "L2 - Important" },
+                    { id: "java-10", title: "equals() vs hashCode() contract, Comparable vs Comparator, natural ordering", weight: 2, level: "L2 - Important" },
+                    { id: "java-11", title: "Java records, sealed classes, pattern matching (Java 14–17 features overview)", weight: 1, level: "L3 - Good to Know" }
+                ],
+                resources: [
+                    { name: "Baeldung Java", url: "https://www.baeldung.com/" },
+                    { name: "Java Memory Mgmt Interview Qs", url: "https://www.baeldung.com/java-memory-management-interview-questions" },
+                    { name: "GFG Java", url: "https://www.geeksforgeeks.org/java/" }
+                ]
+            },
+            {
+                id: "spring-boot",
+                title: "Spring Boot & Microservices (Week 10)",
+                icon: "fa-leaf",
+                topics: [
+                    { id: "sb-1",  title: "Spring Boot internals: auto-config, component scan, @Bean lifecycle, ApplicationContext, BeanFactory", weight: 3, level: "L1 - Must Know" },
+                    { id: "sb-2",  title: "Spring Data JPA: N+1 problem, @Transactional propagation, FetchType LAZY vs EAGER, projections, pagination", weight: 3, level: "L1 - Must Know" },
+                    { id: "sb-3",  title: "REST API design: Richardson Maturity Model, versioning strategies, HATEOAS, global error handling", weight: 3, level: "L1 - Must Know" },
+                    { id: "sb-4",  title: "Spring Security: filter chain, JWT (access + refresh), OAuth2 flows, @PreAuthorize, CSRF", weight: 3, level: "L1 - Must Know" },
+                    { id: "sb-5",  title: "Service discovery & API gateway: Eureka, Spring Cloud Gateway, client-side vs server-side LB", weight: 2, level: "L2 - Important" },
+                    { id: "sb-6",  title: "Resilience4j: circuit breaker states, retry, rate limiter, bulkhead, time limiter", weight: 2, level: "L2 - Important" },
+                    { id: "sb-7",  title: "Inter-service comms: FeignClient, RestTemplate, WebClient (async), Kafka event-driven", weight: 2, level: "L2 - Important" },
+                    { id: "sb-8",  title: "Distributed tracing & observability: Micrometer, Zipkin/Jaeger, log correlation IDs across services", weight: 2, level: "L2 - Important" },
+                    { id: "sb-9",  title: "Bean scopes: Singleton vs Prototype vs Request vs Session, scope pitfalls", weight: 2, level: "L2 - Important" },
+                    { id: "sb-10", title: "AOP: cross-cutting concerns, @Aspect, @Around, @Before, pointcut expressions", weight: 1, level: "L3 - Good to Know" },
+                    { id: "sb-11", title: "Testing: @SpringBootTest, @WebMvcTest, @DataJpaTest, Testcontainers, MockMvc", weight: 1, level: "L3 - Good to Know" }
+                ],
+                resources: [
+                    { name: "Baeldung Spring Boot", url: "https://www.baeldung.com/spring-boot" },
+                    { name: "Spring Boot Microservices Qs", url: "https://www.hirist.tech/blog/top-25-spring-boot-microservices-interview-questions-with-answers/" },
+                    { name: "Advanced Microservices Qs 2026", url: "https://www.codingshuttle.com/blogs/top-20-microservice-interview-questions-for-advanced-spring-boot-developers-in-2025/" }
+                ]
+            },
+            {
+                id: "sysdesign",
+                title: "System Design Fundamentals (Week 11)",
+                icon: "fa-server",
+                topics: [
+                    { id: "sd-1",  title: "Caching: aside, write-through, write-back, eviction policies (LRU/LFU), Redis patterns", weight: 3, level: "Building Blocks" },
+                    { id: "sd-2",  title: "Message queues: Kafka vs RabbitMQ — ordering, partitions, consumer groups, at-least/exactly-once", weight: 3, level: "Building Blocks" },
+                    { id: "sd-3",  title: "Databases at scale: replication (sync/async), sharding strategies, consistent hashing", weight: 3, level: "Building Blocks" },
+                    { id: "sd-4",  title: "API Gateway & Blob/Object Storage (S3, Azure Blob) patterns", weight: 3, level: "Building Blocks" },
+                    { id: "sd-5",  title: "CAP theorem, consistency models, BASE vs ACID, eventual consistency trade-offs", weight: 2, level: "Principles" },
+                    { id: "sd-6",  title: "Scalability patterns (horizontal vs vertical, stateless services) & Observability (metrics, logs, traces)", weight: 2, level: "Principles" },
+                    { id: "sd-7",  title: "Design notification system (FastTask context — Redis queue, WebSocket, push vs pull)", weight: 3, level: "Practice" },
+                    { id: "sd-8",  title: "Design file storage (FastDrive context — chunking, resumable upload, dedup)", weight: 3, level: "Practice" },
+                    { id: "sd-9",  title: "Design real-time system (WebSocket at scale, pub-sub, presence detection)", weight: 3, level: "Practice" },
+                    { id: "sd-10", title: "Design URL shortener (hash collision, redirect, analytics)", weight: 3, level: "Practice" },
+                    { id: "sd-11", title: "Design Twitter/Instagram feed (fan-out on write vs read, celebrity problem, timelines)", weight: 3, level: "Practice" },
+                    { id: "sd-12", title: "Design Rate Limiter (token bucket, leaky bucket, sliding window, Redis impl)", weight: 3, level: "Practice" },
+                    { id: "sd-13", title: "Design Search Autocomplete (Trie at scale, prefix caching, ranking)", weight: 2, level: "Practice" },
+                    { id: "sd-14", title: "Design Chat System (WebSocket at scale, message ordering, offline queue, delivery receipts)", weight: 2, level: "Practice" },
+                    { id: "sd-15", title: "Design Ride-sharing System (geospatial indexing, driver-rider matching, surge pricing)", weight: 2, level: "Practice" }
+                ],
+                resources: [
+                    { name: "System Design Primer", url: "https://github.com/donnemartin/system-design-primer" },
+                    { name: "ByteByteGo", url: "https://bytebytego.com/" },
+                    { name: "Grokking System Design", url: "https://www.designgurus.io/course/grokking-the-system-design-interview" }
+                ]
+            }
+        ]
+    },
+    {
+        id: "phase2",
+        title: "Phase 2 — DSA Grind",
+        subtitle: "Weeks 12–17 (April → June)",
+        color: "emerald",
+        modules: [
+            {
+                id: "dsa-rev",
+                title: "Revision Sprint (Week 12)",
+                icon: "fa-person-running",
+                topics: [
+                    { id: "dsa-1",  title: "Arrays (two-pointer, sliding window, Kadane's, prefix sum)", weight: 3, level: "Core" },
+                    { id: "dsa-2",  title: "Strings (KMP, Rabin-Karp, Z-algorithm, anagrams)", weight: 2, level: "Core" },
+                    { id: "dsa-3",  title: "Linked List (cycle detection, reversal, LRU cache, merge sorted lists)", weight: 3, level: "Core" },
+                    { id: "dsa-4",  title: "Stacks & Queues (monotonic stack, sliding window max, min stack)", weight: 3, level: "Core" },
+                    { id: "dsa-17", title: "Bit Manipulation: XOR tricks, set/clear/toggle bits, count set bits, power of two, swap without temp", weight: 3, level: "Core" },
+                    { id: "dsa-18", title: "Prefix Sum & Difference Array: range sum queries, range update, 2D prefix sum", weight: 3, level: "Core" },
+                    { id: "dsa-19", title: "Hashing Patterns: frequency maps, two-sum variants, sliding window + HashMap, grouping anagrams", weight: 3, level: "Core" },
+                    { id: "dsa-20", title: "Binary Search: on sorted array, rotated array, binary search on answer, first/last occurrence", weight: 3, level: "Core" }
+                ],
+                resources: [
+                    { name: "Striver's A2Z Sheet", url: "https://takeuforward.org/strivers-a2z-dsa-course/strivers-a2z-dsa-course-sheet-2/" },
+                    { name: "NeetCode 150", url: "https://neetcode.io/practice" }
+                ]
+            },
+            {
+                id: "dsa-trees",
+                title: "Trees (Week 13)",
+                icon: "fa-tree",
+                topics: [
+                    { id: "dsa-5", title: "Binary Tree: traversals (all 4), diameter, height, LCA, zigzag, boundary", weight: 3, level: "Core" },
+                    { id: "dsa-6", title: "BST: search/insert/delete, validate, kth smallest/largest, floor/ceil", weight: 3, level: "Core" },
+                    { id: "dsa-7", title: "Advanced Trees: Trie (insert/search/prefix), Heap (heapify, implementation)", weight: 2, level: "Adv" }
+                ],
+                resources: [
+                    { name: "Striver's Trees Playlist", url: "https://takeuforward.org/" },
+                    { name: "Leetcode Trees", url: "https://leetcode.com/tag/tree/" }
+                ]
+            },
+            {
+                id: "dsa-graphs",
+                title: "Graphs (Week 14)",
+                icon: "fa-project-diagram",
+                topics: [
+                    { id: "dsa-8",  title: "Traversal: BFS, DFS (iterative + recursive), connected components", weight: 3, level: "Core" },
+                    { id: "dsa-9",  title: "Shortest path: Dijkstra, Bellman-Ford, Floyd-Warshall (with negative weights)", weight: 3, level: "Core" },
+                    { id: "dsa-10", title: "Topological sort: Kahn's (BFS) + DFS-based, cycle detection in directed graph", weight: 3, level: "Core" },
+                    { id: "dsa-11", title: "Advanced: DSU (path compression + union by rank), Prim's/Kruskal's MST, Bridges/Articulation points", weight: 2, level: "Adv" }
+                ],
+                resources: [
+                    { name: "Striver's Graph Playlist", url: "https://www.youtube.com/playlist?list=PLgUwDviBIf0oE3gA41TKO2H5bHpPd7fzn" }
+                ]
+            },
+            {
+                id: "dsa-backtrack",
+                title: "Backtracking (Week 15)",
+                icon: "fa-code-branch",
+                topics: [
+                    { id: "dsa-21", title: "Subsets & Permutations: power set, permutations with duplicates, subsequences", weight: 3, level: "Core" },
+                    { id: "dsa-22", title: "Combination Sum variants: with/without repetition, k-combinations, target sum", weight: 3, level: "Core" },
+                    { id: "dsa-23", title: "Classic problems: N-Queens, Sudoku solver, Word search on grid, Rat in a maze", weight: 2, level: "Core" },
+                    { id: "dsa-24", title: "Pruning techniques: early termination, memoized backtracking, bitmask DP crossover", weight: 2, level: "Adv" }
+                ],
+                resources: [
+                    { name: "NeetCode Backtracking", url: "https://neetcode.io/practice" },
+                    { name: "Striver's Recursion & Backtracking", url: "https://takeuforward.org/" }
+                ]
+            },
+            {
+                id: "dsa-math",
+                title: "Math & Number Theory (Week 15)",
+                icon: "fa-square-root-variable",
+                topics: [
+                    { id: "dsa-25", title: "Sieve of Eratosthenes: prime generation, smallest prime factor array, segmented sieve", weight: 2, level: "Core" },
+                    { id: "dsa-26", title: "GCD/LCM: Euclidean & extended Euclidean algorithm, applications in array problems", weight: 2, level: "Core" },
+                    { id: "dsa-27", title: "Modular arithmetic: fast exponentiation (binary exponentiation), modular inverse, Fermat's little theorem", weight: 2, level: "Core" },
+                    { id: "dsa-28", title: "Combinatorics: nCr with Pascal's triangle, counting in DP problems", weight: 1, level: "Adv" }
+                ],
+                resources: [
+                    { name: "GFG Number Theory", url: "https://www.geeksforgeeks.org/mathematical-algorithms/" }
+                ]
+            },
+            {
+                id: "dsa-dp",
+                title: "Heaps, Greedy & DP (Weeks 16–17)",
+                icon: "fa-brain",
+                topics: [
+                    { id: "dsa-12", title: "Heaps: Top-K elements, merge K sorted lists, find median from data stream", weight: 3, level: "Heaps" },
+                    { id: "dsa-13", title: "Greedy: interval scheduling, jump game, fractional knapsack, meeting rooms", weight: 3, level: "Greedy" },
+                    { id: "dsa-14", title: "1D DP: climbing stairs, coin change, LIS, house robber, word break", weight: 3, level: "DP" },
+                    { id: "dsa-15", title: "2D DP: 0/1 knapsack, LCS, edit distance, unique paths, matrix chain mult", weight: 3, level: "DP" },
+                    { id: "dsa-16", title: "Interval & Tree DP, partition DP, digit DP", weight: 2, level: "Adv DP" }
+                ],
+                resources: [
+                    { name: "NeetCode DP", url: "https://neetcode.io/practice" },
+                    { name: "Striver's DP Playlist", url: "https://takeuforward.org/" }
+                ]
+            }
+        ]
+    },
+    {
+        id: "phase3",
+        title: "Phase 3 — Mock Interviews + Polish",
+        subtitle: "Weeks 18–21 (June → Placements)",
+        color: "purple",
+        modules: [
+            {
+                id: "polish",
+                title: "Interview Prep",
+                icon: "fa-user-tie",
+                topics: [
+                    { id: "int-1", title: "Project deep dives: Synq (588K rows/sec), FastPeer arch, FastTask WebSocket, FastDrive Azure Blob", weight: 3, level: "Projects" },
+                    { id: "int-2", title: "Mock Interviews: Pramp, Interviewing.io — minimum 10 full sessions before placements", weight: 3, level: "Mocks" },
+                    { id: "int-3", title: "Weekly timed Leetcode contests (simulate OA pressure)", weight: 3, level: "Practice" },
+                    { id: "int-4", title: "Behavioral STAR format: 5 stories covering challenge, conflict, leadership, failure, growth", weight: 3, level: "HR" },
+                    { id: "int-5", title: "Java + Spring Boot mock Q&A: 25 most-asked questions drill (GC, JVM, N+1, bean lifecycle)", weight: 3, level: "Projects" },
+                    { id: "int-6", title: "System Design 45-min mock format: Requirements → Estimation → Design → Deep-dive → Trade-offs", weight: 3, level: "Mocks" },
+                    { id: "int-7", title: "LLD 30-min mock format: requirements → class diagram on paper → code skeleton → review", weight: 3, level: "Mocks" },
+                    { id: "int-8", title: "Time & space complexity: amortized analysis, Master theorem, recurrence solving", weight: 2, level: "Practice" },
+                    { id: "int-9", title: "OA strategy: time-boxing per problem, partial scoring, brute-force-first → optimize", weight: 2, level: "Practice" },
+                    { id: "int-10", title: "Resume-driven technical Qs: explain every metric and decision on your resume (Synq numbers, N8N automation, partitioning choices)", weight: 3, level: "HR" }
+                ],
+                resources: [
+                    { name: "Tech Interview Handbook", url: "https://www.techinterviewhandbook.org/" },
+                    { name: "Pramp", url: "https://www.pramp.com/" },
+                    { name: "Interviewing.io", url: "https://interviewing.io/" }
+                ]
+            }
+        ]
+    }
+];
+/**
+ * --- STATE MANAGEMENT ---
+ */
+const AppState = {
+    isAuthenticated: localStorage.getItem('roadmap_auth') === 'true',
+    progress: JSON.parse(localStorage.getItem('roadmap_progress') || '{}'),
+    
+    saveProgress() {
+        localStorage.setItem('roadmap_progress', JSON.stringify(this.progress));
+    },
+    
+    toggleTask(taskId) {
+        this.progress[taskId] = !this.progress[taskId];
+        this.saveProgress();
+        UI.updateStats();
+    },
+
+    getStats() {
+        let totalTasks = 0;
+        let completedTasks = 0;
+        let totalWeight = 0;
+        let completedWeight = 0;
+
+        roadmapData.forEach(phase => {
+            phase.modules.forEach(mod => {
+                mod.topics.forEach(topic => {
+                    totalTasks++;
+                    totalWeight += topic.weight;
+                    if (this.progress[topic.id]) {
+                        completedTasks++;
+                        completedWeight += topic.weight;
+                    }
+                });
+            });
+        });
+
+        const percentage = totalWeight === 0 ? 0 : Math.round((completedWeight / totalWeight) * 100);
+        
+        let mastery = "Novice";
+        if (percentage > 25) mastery = "Apprentice";
+        if (percentage > 50) mastery = "Practitioner";
+        if (percentage > 75) mastery = "Expert";
+        if (percentage === 100) mastery = "Master";
+
+        return { totalTasks, completedTasks, totalWeight, completedWeight, percentage, mastery };
+    },
+
+    getModuleStats(moduleId) {
+        let total = 0;
+        let completed = 0;
+        
+        roadmapData.forEach(phase => {
+            const mod = phase.modules.find(m => m.id === moduleId);
+            if (mod) {
+                mod.topics.forEach(t => {
+                    total += t.weight;
+                    if (this.progress[t.id]) completed += t.weight;
+                });
+            }
+        });
+        const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
+        return { total, completed, percentage };
+    }
+};
+
+/**
+ * --- UI LOGIC ---
+ */
+const UI = {
+    init() {
+        this.cacheDOM();
+        this.bindEvents();
+        
+        if (AppState.isAuthenticated) {
+            this.showDashboard();
+        } else {
+            this.showLogin();
+        }
+    },
+
+    cacheDOM() {
+        this.loginScreen = document.getElementById('login-screen');
+        this.dashboard = document.getElementById('dashboard');
+        this.loginForm = document.getElementById('login-form');
+        this.loginError = document.getElementById('login-error');
+        this.logoutBtn = document.getElementById('logout-btn');
+        this.roadmapContainer = document.getElementById('roadmap-container');
+        this.sidebarNav = document.getElementById('sidebar-nav');
+        this.searchInput = document.getElementById('search-input');
+        this.emptyState = document.getElementById('empty-state');
+        this.mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        this.sidebar = document.querySelector('aside');
+        this.mobileOverlay = document.getElementById('mobile-overlay');
+        
+        // Stats
+        this.statTotalTasks = document.getElementById('stat-total-tasks');
+        this.statCompletedPoints = document.getElementById('stat-completed-points');
+        this.statTotalPoints = document.getElementById('stat-total-points');
+        this.statMastery = document.getElementById('stat-mastery');
+        this.sidebarProgressRing = document.getElementById('sidebar-progress-ring');
+        this.sidebarProgressText = document.getElementById('sidebar-progress-text');
+    },
+
+    bindEvents() {
+        this.loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            
+            if (user === 'admin' && pass === 'admin') {
+                localStorage.setItem('roadmap_auth', 'true');
+                AppState.isAuthenticated = true;
+                this.showDashboard();
+            } else {
+                this.loginError.classList.remove('hidden');
+                setTimeout(() => this.loginError.classList.add('hidden'), 3000);
+            }
+        });
+
+        this.logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('roadmap_auth');
+            AppState.isAuthenticated = false;
+            document.getElementById('password').value = '';
+            this.showLogin();
+        });
+
+        // Event delegation for checkboxes and accordions
+        this.roadmapContainer.addEventListener('click', (e) => {
+            // Checkbox logic
+            if (e.target.classList.contains('task-checkbox')) {
+                const taskId = e.target.dataset.id;
+                AppState.toggleTask(taskId);
+                this.updateModuleProgressUI(e.target.dataset.module);
+            }
+            
+            // Accordion logic
+            const header = e.target.closest('.accordion-header');
+            if (header) {
+                const contentId = header.dataset.target;
+                const content = document.getElementById(contentId);
+                const icon = header.querySelector('.accordion-icon');
+                
+                content.classList.toggle('expanded');
+                icon.classList.toggle('expanded-icon');
+            }
+        });
+
+        // Search logic
+        this.searchInput.addEventListener('input', (e) => this.handleSearch(e.target.value));
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '/' && document.activeElement !== this.searchInput) {
+                e.preventDefault();
+                this.searchInput.focus();
+            } else if (e.key === 'Escape' && document.activeElement === this.searchInput) {
+                this.searchInput.blur();
+                this.searchInput.value = '';
+                this.handleSearch('');
+            }
+        });
+
+        // Mobile Menu
+        this.mobileMenuBtn.addEventListener('click', () => {
+            this.sidebar.classList.toggle('hidden');
+            this.sidebar.classList.add('absolute', 'z-40', 'h-full');
+            this.mobileOverlay.classList.remove('hidden');
+        });
+
+        this.mobileOverlay.addEventListener('click', () => {
+            this.sidebar.classList.add('hidden');
+            this.sidebar.classList.remove('absolute', 'z-40', 'h-full');
+            this.mobileOverlay.classList.add('hidden');
+        });
+    },
+
+    showLogin() {
+        this.dashboard.classList.add('hidden');
+        this.loginScreen.classList.remove('hidden');
+    },
+
+    showDashboard() {
+        this.loginScreen.classList.add('hidden');
+        this.dashboard.classList.remove('hidden');
+        this.renderRoadmap();
+        this.renderSidebarNav();
+        this.updateStats();
+    },
+
+    getColorClasses(colorName) {
+        const map = {
+            blue: { text: 'text-blue-400', bg: 'bg-blue-500/10', border: 'border-blue-500/30', bar: 'bg-blue-500' },
+            emerald: { text: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30', bar: 'bg-emerald-500' },
+            purple: { text: 'text-purple-400', bg: 'bg-purple-500/10', border: 'border-purple-500/30', bar: 'bg-purple-500' }
+        };
+        return map[colorName] || map.blue;
+    },
+
+    renderRoadmap() {
+        this.roadmapContainer.innerHTML = '';
+
+        roadmapData.forEach((phase, pIndex) => {
+            const colors = this.getColorClasses(phase.color);
+            
+            const phaseEl = document.createElement('div');
+            phaseEl.className = 'phase-section fade-in';
+            phaseEl.style.animationDelay = `${pIndex * 0.1}s`;
+            phaseEl.id = `nav-${phase.id}`;
+
+            let html = `
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold text-white flex items-center">
+                        <span class="w-2 h-8 rounded-full ${colors.bar} mr-3"></span>
+                        ${phase.title}
+                    </h2>
+                    <p class="text-gray-400 ml-5 mt-1 text-sm font-medium tracking-wide uppercase">${phase.subtitle}</p>
+                </div>
+                <div class="grid grid-cols-1 gap-4">
+            `;
+
+            phase.modules.forEach(mod => {
+                const modStats = AppState.getModuleStats(mod.id);
+                
+                html += `
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden search-module" data-search="${mod.title.toLowerCase()} ${mod.topics.map(t=>t.title.toLowerCase()).join(' ')}">
+                        <!-- Accordion Header -->
+                        <div class="accordion-header p-5 cursor-pointer hover:bg-gray-800/50 transition-colors flex items-center justify-between select-none" data-target="content-${mod.id}">
+                            <div class="flex items-center space-x-4 flex-1">
+                                <div class="w-10 h-10 rounded-lg ${colors.bg} ${colors.text} flex items-center justify-center text-lg">
+                                    <i class="fa-solid ${mod.icon}"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-semibold text-gray-100">${mod.title}</h3>
+                                    <div class="flex items-center mt-2 w-full max-w-md">
+                                        <div class="flex-1 h-1.5 bg-gray-800 rounded-full overflow-hidden">
+                                            <div id="bar-${mod.id}" class="h-full ${colors.bar} transition-all duration-500 ease-out" style="width: ${modStats.percentage}%"></div>
+                                        </div>
+                                        <span id="text-${mod.id}" class="text-xs text-gray-400 ml-3 font-medium min-w-[3rem]">${modStats.percentage}%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ml-4 text-gray-500">
+                                <i class="fa-solid fa-chevron-down accordion-icon"></i>
+                            </div>
+                        </div>
+
+                        <!-- Accordion Content -->
+                        <div id="content-${mod.id}" class="accordion-content border-t border-gray-800/50 bg-gray-900/50">
+                            <div class="p-5">
+                                <div class="space-y-3">
+                `;
+
+                mod.topics.forEach(topic => {
+                    const isChecked = AppState.progress[topic.id] ? 'checked' : '';
+                    const levelColors = topic.level.includes('L1') || topic.level.includes('Core') ? 'text-red-400 bg-red-400/10 border-red-400/20' : 
+                                        topic.level.includes('L2') || topic.level.includes('Patterns') ? 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20' : 
+                                        'text-blue-400 bg-blue-400/10 border-blue-400/20';
+
+                    html += `
+                        <label class="flex items-start group cursor-pointer p-3 rounded-lg hover:bg-gray-800 transition-colors border border-transparent hover:border-gray-700">
+                            <div class="flex-shrink-0 mt-0.5">
+                                <input type="checkbox" class="checkbox-custom task-checkbox" data-id="${topic.id}" data-module="${mod.id}" data-weight="${topic.weight}" ${isChecked}>
+                            </div>
+                            <div class="ml-3 flex-1">
+                                <p class="text-sm font-medium ${isChecked ? 'text-gray-500 line-through' : 'text-gray-200'} transition-colors duration-200 task-text-${topic.id}">${topic.title}</p>
+                                <span class="inline-block mt-1.5 px-2 py-0.5 rounded text-[10px] font-semibold border ${levelColors}">${topic.level} &bull; ${topic.weight} pt${topic.weight > 1 ? 's' : ''}</span>
+                            </div>
+                        </label>
+                    `;
+                });
+
+                html += `</div>`;
+
+                // Resources
+                if (mod.resources && mod.resources.length > 0) {
+                    html += `
+                        <div class="mt-5 pt-4 border-t border-gray-800">
+                            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Resources</p>
+                            <div class="flex flex-wrap gap-2">
+                    `;
+                    mod.resources.forEach(res => {
+                        html += `
+                            <a href="${res.url}" class="inline-flex items-center px-3 py-1.5 rounded-md bg-gray-800 text-xs font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition-colors border border-gray-700">
+                                <i class="fa-solid fa-link mr-1.5 text-gray-500"></i> ${res.name}
+                            </a>
+                        `;
+                    });
+                    html += `</div></div>`;
+                }
+
+                html += `
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `</div>`;
+            phaseEl.innerHTML = html;
+            this.roadmapContainer.appendChild(phaseEl);
+        });
+    },
+
+    renderSidebarNav() {
+        this.sidebarNav.innerHTML = '';
+        roadmapData.forEach(phase => {
+            const a = document.createElement('a');
+            a.href = `#nav-${phase.id}`;
+            a.className = 'flex items-center px-4 py-2 text-sm font-medium text-gray-300 rounded-lg hover:bg-gray-800 hover:text-white transition-colors group';
+            a.innerHTML = `
+                <span class="w-1.5 h-1.5 rounded-full bg-${phase.color}-500 mr-3 opacity-70 group-hover:opacity-100"></span>
+                ${phase.title.split('—')[0].trim()}
+            `;
+            // Smooth scroll
+            a.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.getElementById(`nav-${phase.id}`);
+                const scrollArea = document.getElementById('main-scroll-area');
+                scrollArea.scrollTo({
+                    top: target.offsetTop - 80, // Offset for header
+                    behavior: 'smooth'
+                });
+                // Close mobile menu if open
+                if (!this.sidebar.classList.contains('hidden') && window.innerWidth < 768) {
+                    this.sidebar.classList.add('hidden');
+                    this.mobileOverlay.classList.add('hidden');
+                }
+            });
+            this.sidebarNav.appendChild(a);
+        });
+    },
+
+    updateModuleProgressUI(moduleId) {
+        const stats = AppState.getModuleStats(moduleId);
+        const bar = document.getElementById(`bar-${moduleId}`);
+        const text = document.getElementById(`text-${moduleId}`);
+        
+        if (bar && text) {
+            bar.style.width = `${stats.percentage}%`;
+            text.innerText = `${stats.percentage}%`;
+        }
+
+        // Strikethrough logic is handled via CSS classes, just need to toggle it
+        const checkboxes = document.querySelectorAll(`input[data-module="${moduleId}"]`);
+        checkboxes.forEach(cb => {
+            const textEl = document.querySelector(`.task-text-${cb.dataset.id}`);
+            if (cb.checked) {
+                textEl.classList.add('text-gray-500', 'line-through');
+                textEl.classList.remove('text-gray-200');
+            } else {
+                textEl.classList.remove('text-gray-500', 'line-through');
+                textEl.classList.add('text-gray-200');
+            }
+        });
+    },
+
+    updateStats() {
+        const stats = AppState.getStats();
+        
+        // Update top panels
+        this.statTotalTasks.innerText = stats.totalTasks;
+        this.statCompletedPoints.innerText = stats.completedWeight;
+        this.statTotalPoints.innerText = stats.totalWeight;
+        this.statMastery.innerText = stats.mastery;
+
+        // Update Circular Progress
+        const circle = this.sidebarProgressRing;
+        const radius = circle.r.baseVal.value;
+        const circumference = radius * 2 * Math.PI;
+        
+        // Ensure stroke properties are set
+        circle.style.strokeDasharray = `${circumference} ${circumference}`;
+        
+        const offset = circumference - (stats.percentage / 100) * circumference;
+        circle.style.strokeDashoffset = offset;
+        
+        this.sidebarProgressText.innerText = `${stats.percentage}%`;
+    },
+
+    handleSearch(query) {
+        const term = query.toLowerCase().trim();
+        const modules = document.querySelectorAll('.search-module');
+        let visibleCount = 0;
+
+        modules.forEach(mod => {
+            const searchableText = mod.dataset.search;
+            if (searchableText.includes(term)) {
+                mod.classList.remove('hidden');
+                visibleCount++;
+                
+                // Auto expand if searching, collapse if empty
+                const content = mod.querySelector('.accordion-content');
+                const icon = mod.querySelector('.accordion-icon');
+                if (term !== '') {
+                    content.classList.add('expanded');
+                    icon.classList.add('expanded-icon');
+                } else {
+                    content.classList.remove('expanded');
+                    icon.classList.remove('expanded-icon');
+                }
+            } else {
+                mod.classList.add('hidden');
+            }
+        });
+
+        // Hide/Show phase headers if all modules inside are hidden
+        const phases = document.querySelectorAll('.phase-section');
+        phases.forEach(phase => {
+            const visibleModules = phase.querySelectorAll('.search-module:not(.hidden)');
+            if (visibleModules.length === 0) {
+                phase.classList.add('hidden');
+            } else {
+                phase.classList.remove('hidden');
+            }
+        });
+
+        // Empty state
+        if (visibleCount === 0) {
+            this.emptyState.classList.remove('hidden');
+            this.emptyState.classList.add('flex');
+        } else {
+            this.emptyState.classList.add('hidden');
+            this.emptyState.classList.remove('flex');
+        }
+    }
+};
+
+// Initialize Application
+document.addEventListener('DOMContentLoaded', () => {
+    UI.init();
+});
+
+</script>
+</body>
+</html>
