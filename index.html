@@ -306,6 +306,93 @@
  * Based on the provided prompt (Phase 1, 2, 3)
  * Weights: L1/Must Know/Core = 3, L2/Important = 2, L3/Good to Know/Advanced = 1
  */
+function buildPrompt(subjectTitle, topicList) {
+    return `You are an expert ${subjectTitle} interview coach. I am preparing for software engineering 
+placements and want to master the following topics one at a time.
+
+**My topic list:**
+${topicList}
+
+---
+
+### Rules you must follow:
+
+**Step 1 — Teach the topic**
+- Start with Topic 1 only. Do NOT jump ahead.
+- Give a clear, interview-focused explanation (not textbook theory).
+- Use real-world examples where helpful (especially PostgreSQL-related ones).
+- After explaining, include a **📋 NOTION NOTES BLOCK** (see template below).
+
+**Step 2 — Quiz me**
+- After the explanation + notes block, generate a quiz of 5–7 questions 
+  on that topic only (mix of MCQ and short answer).
+- Wait for my answers before giving feedback.
+- After I answer, give feedback and corrections.
+
+**Step 3 — Move forward**
+- Only after I say "next" or "move on" should you proceed to Topic 2.
+- Follow the same pattern: Teach → Notes Block → Quiz → Wait → Feedback → Next.
+
+---
+
+### 📋 NOTION NOTES BLOCK TEMPLATE (use this exact format every time):
+
+---
+## [TOPIC NAME]
+
+**📌 1-Line Definition**  
+[One sharp sentence]
+
+**🎯 Why It Matters in Interviews**  
+[1–2 sentences on why interviewers ask this]
+
+**🧠 Core Points**
+- [bullet]
+- [bullet]
+- [bullet]
+
+**❓ Common Interview Questions**
+1. [question]
+2. [question]
+3. [question]
+
+**⚠️ Common Mistakes**
+- [mistake]
+- [mistake]
+
+**💡 Mini Example**
+\`\`\`
+[code block or scenario — keep it short]
+\`\`\`
+
+**🃏 Flashcards**
+| Question | Answer |
+|----------|--------|
+| Q → | A |
+| Q → | A |
+| Q → | A |
+
+**⚡ Last-Minute Summary (max 5 bullets)**
+- 
+- 
+- 
+- 
+- 
+
+---
+
+### My context (use to personalize examples):
+- I use PostgreSQL heavily in my projects (Synq — a DB migration CLI tool, 
+  FastPeer — a backend system).
+- I'm a backend/systems engineer comfortable with Java, Kotlin, SQL, Docker.
+- Prefer practical, production-relevant explanations over pure theory.
+- Keep the tone direct and technical — no hand-holding.
+
+### Start:
+Begin with Topic 1 now. Teach it, then show the Notion Notes Block, 
+then quiz me.`;
+}
+
 const roadmapData = [
     {
         id: "phase1",
@@ -785,6 +872,50 @@ const UI = {
                 this.updateModuleProgressUI(e.target.dataset.module);
             }
             
+            // Copy single topic to prompt
+            const copyTopicBtn = e.target.closest('.copy-topic-btn');
+            if (copyTopicBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                const title = copyTopicBtn.dataset.topicTitle;
+                const level = copyTopicBtn.dataset.topicLevel;
+                const moduleTitle = copyTopicBtn.dataset.moduleTitle;
+                const topicList = `1. ${title} (${level})`;
+                const prompt = buildPrompt(moduleTitle, topicList);
+                navigator.clipboard.writeText(prompt).then(() => {
+                    const short = title.length > 45 ? title.substring(0, 45) + '…' : title;
+                    this.showCopyToast(`"${short}" copied!`);
+                });
+                return;
+            }
+
+            // Copy all pending topics in a module to prompt
+            const copySubjectBtn = e.target.closest('.copy-subject-btn');
+            if (copySubjectBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                const moduleId = copySubjectBtn.dataset.moduleId;
+                let targetModule = null;
+                for (const phase of roadmapData) {
+                    targetModule = phase.modules.find(m => m.id === moduleId);
+                    if (targetModule) break;
+                }
+                if (!targetModule) return;
+                const pendingTopics = targetModule.topics.filter(t => !AppState.progress[t.id]);
+                if (pendingTopics.length === 0) {
+                    this.showCopyToast('All topics already completed! 🎉');
+                    return;
+                }
+                const topicList = pendingTopics
+                    .map((t, i) => `${i + 1}. ${t.title} (${t.level})`)
+                    .join('\n');
+                const prompt = buildPrompt(targetModule.title, topicList);
+                navigator.clipboard.writeText(prompt).then(() => {
+                    this.showCopyToast(`${pendingTopics.length} topics from "${targetModule.title}" copied!`);
+                });
+                return;
+            }
+
             // Accordion logic
             const header = e.target.closest('.accordion-header');
             if (header) {
@@ -891,7 +1022,12 @@ const UI = {
                                     </div>
                                 </div>
                             </div>
-                            <div class="ml-4 text-gray-500">
+                            <button class="copy-subject-btn flex-shrink-0 ml-2 p-2 rounded text-gray-500 hover:text-brand-500 hover:bg-gray-700 transition-colors"
+                                    data-module-id="${mod.id}"
+                                    title="Copy pending topics to prompt">
+                                <i class="fa-solid fa-list-check text-sm"></i>
+                            </button>
+                            <div class="ml-2 text-gray-500">
                                 <i class="fa-solid fa-chevron-down accordion-icon"></i>
                             </div>
                         </div>
@@ -913,9 +1049,18 @@ const UI = {
                             <div class="flex-shrink-0 mt-0.5">
                                 <input type="checkbox" class="checkbox-custom task-checkbox" data-id="${topic.id}" data-module="${mod.id}" data-weight="${topic.weight}" ${isChecked}>
                             </div>
-                            <div class="ml-3 flex-1">
-                                <p class="text-sm font-medium ${isChecked ? 'text-gray-500 line-through' : 'text-gray-200'} transition-colors duration-200 task-text-${topic.id}">${topic.title}</p>
-                                <span class="inline-block mt-1.5 px-2 py-0.5 rounded text-[10px] font-semibold border ${levelColors}">${topic.level} &bull; ${topic.weight} pt${topic.weight > 1 ? 's' : ''}</span>
+                            <div class="ml-3 flex-1 flex items-start justify-between gap-2">
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium ${isChecked ? 'text-gray-500 line-through' : 'text-gray-200'} transition-colors duration-200 task-text-${topic.id}">${topic.title}</p>
+                                    <span class="inline-block mt-1.5 px-2 py-0.5 rounded text-[10px] font-semibold border ${levelColors}">${topic.level} &bull; ${topic.weight} pt${topic.weight > 1 ? 's' : ''}</span>
+                                </div>
+                                <button class="copy-topic-btn flex-shrink-0 mt-0.5 p-1.5 rounded opacity-0 group-hover:opacity-100 transition-opacity text-gray-500 hover:text-brand-500 hover:bg-gray-700"
+                                        data-topic-title="${topic.title.replace(/"/g, '&quot;')}"
+                                        data-topic-level="${topic.level}"
+                                        data-module-title="${mod.title.replace(/"/g, '&quot;')}"
+                                        title="Copy topic to prompt">
+                                    <i class="fa-regular fa-copy text-xs"></i>
+                                </button>
                             </div>
                         </label>
                     `;
@@ -1029,6 +1174,19 @@ const UI = {
         this.sidebarProgressText.innerText = `${stats.percentage}%`;
     },
 
+    showCopyToast(message) {
+        const toast = document.getElementById('copy-toast');
+        const msg = document.getElementById('copy-toast-msg');
+        msg.textContent = message;
+        toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
+        toast.classList.add('opacity-100', 'translate-y-0');
+        clearTimeout(this._toastTimer);
+        this._toastTimer = setTimeout(() => {
+            toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
+            toast.classList.remove('opacity-100', 'translate-y-0');
+        }, 2500);
+    },
+
     handleSearch(query) {
         const term = query.toLowerCase().trim();
         const modules = document.querySelectorAll('.search-module');
@@ -1083,5 +1241,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
+
+<!-- Copy Toast Notification -->
+<div id="copy-toast" class="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-gray-800 border border-gray-700 text-white text-sm px-4 py-2.5 rounded-lg shadow-xl opacity-0 pointer-events-none transition-all duration-300 translate-y-2">
+    <i class="fa-solid fa-check text-emerald-400 text-xs"></i>
+    <span id="copy-toast-msg">Prompt copied!</span>
+</div>
+
 </body>
 </html>
