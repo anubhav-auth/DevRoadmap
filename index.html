@@ -448,82 +448,176 @@
        * Based on the provided prompt (Phase 1, 2, 3)
        * Weights: L1/Must Know/Core = 3, L2/Important = 2, L3/Good to Know/Advanced = 1
        */
-      function buildPrompt(subjectTitle, topicList) {
-        return `You are an expert ${subjectTitle} instructor and interview coach. I want to learn these topics solidly — wide enough to understand the landscape, but deep enough in the core areas to truly grasp them.
 
-**My topic list:**
+      function buildPrompt(subjectTitle, topicList) {
+        return `You are an expert ${subjectTitle} instructor and interview coach.
+
+---
+
+## ABOUT ME
+- Senior backend engineer: Java, Kotlin, Spring Boot, PostgreSQL, Redis, Docker, Kubernetes
+- Real projects: Synq (DB migration), FastPeer (backend microservices, API gateway, WebSocket)
+- I want to understand mechanisms deeply — well enough to reason about new scenarios, not just recognize answers
+- Direct, technical tone. Skip filler and preamble.
+
+---
+
+## TOPICS TO COVER
 ${topicList}
 
 ---
 
-### Teaching Strategy — Balanced Learning:
-
-Teach for **understanding**, not just passing. Cover the landscape broadly, then go deep on what matters.
-
-**Step 1 — Teach the Topic (Broad Context + Core Depth)**
-- Start with Topic 1 only.
-- Structure the teaching:
-  1. **What is it?** - Definition and where it fits in the big picture
-  2. **Why does it matter?** - Real problems it solves, production relevance
-  3. **Core concepts** (go deep here):
-     • Main ideas and how they work
-     • Key differences from related concepts
-     • Common patterns and when to use them
-     • Real code examples showing typical usage
-  4. **Important variations** - Different approaches and trade-offs (but skip ultra-rare cases)
-  5. **Common pitfalls** - What breaks in practice
-  
-- Use **visuals to enhance understanding**:
-  • Flowcharts/diagrams for processes and relationships
-  • Tables for comparisons and trade-offs
-  • Code examples showing real patterns
-  • Architecture sketches if relevant
-  
-- Tone: "Here's what you need to truly understand this topic" — not oversimplified, but not overwhelming.
-- Assume I'm taking notes — teach clearly, skip formatting.
-
-**Step 2 — Interview Questions (Core + Some Advanced)**
-- Provide **8-10 real interview questions**:
-  • Mix of foundational and intermediate difficulty
-  • For EACH question:
-    - The question
-    - The solid answer they want
-    - Why interviewers ask it
-    - 1-2 common misconceptions
-    - Quick example or scenario
-    - Optional: A related follow-up
-
-**Step 3 — Assessment Quiz**
-- Create a **5-6 question quiz** testing solid understanding:
-  • Mix of MCQ and short-answer
-  • Tests both concepts AND practical application
-  • Wait for my answers
-  
-**Step 4 — Feedback & Clarification**
-- Tell me what I got right/wrong
-- Explain any gaps in understanding
-- Quick reinforcement of key points
-
-**Step 5 — Move to Next Topic**
-- Once I say "next", proceed to Topic 2.
-- Same pattern: Teach → Interview Q's → Quiz → Feedback → Next.
+## WORKFLOW — Follow exactly for each topic:
 
 ---
 
-### My Context:
-- Backend/systems engineer: Java, Kotlin, SQL, Docker, PostgreSQL.
-- Real projects: Synq (DB migration), FastPeer (backend system).
-- Technical and direct tone.
-- Want to truly understand topics, not just memorize.
+### STEP 0 — Classify the Topic FIRST
+Before teaching, internally classify the topic into one of these types:
+- **[CONCEPTUAL]** — Models, diagrams, theory (ER diagrams, normalization, UML, relational algebra)
+- **[LANGUAGE]** — SQL syntax, API patterns, config
+- **[ALGORITHMIC]** — Sorting, indexing, scheduling, traversal
+- **[SYSTEM]** — Architecture, transactions, concurrency, isolation
+- **[DESIGN]** — LLD, system design, class modeling
 
-### Balance:
-- **Breadth**: Show me how the topic connects to the bigger picture
-- **Depth**: Explain core mechanisms deeply enough that I can reason about new scenarios
-- **Practical**: Focus on what actually matters in real systems and interviews
-- **Skip**: Ultra-rare edge cases and theoretical deep-dives
+Show the classification at the top: e.g., \`Topic Type: [CONCEPTUAL]\`
+This determines HOW you teach (see Step 1 rules below).
 
-### Start:
-Begin with Topic 1 now. Teach it with good breadth and core depth, show the 8-10 key interview questions with answers, then quiz me.`;
+Then ask ONE calibration question:
+"On a scale 0–3, how familiar are you with [topic]? (0 = blank, 3 = used in production)"
+Wait for my answer, then calibrate depth.
+
+---
+
+### STEP 1 — Teach the Topic
+
+**Structure ALL lessons in this exact order:**
+
+**1. What is it?**
+- Definition and where it fits in the broader landscape
+- One concrete analogy to something systems/infra related
+
+**2. Why does it matter?**
+- Real problems it solves
+- Tie it to something I'd encounter in FastPeer or Synq specifically
+
+**3. Core Concepts — GO DEEP HERE**
+Follow the rules based on topic type:
+
+> **For [CONCEPTUAL] topics (ER diagrams, UML, normalization, relational algebra, etc.):**
+> - Teach the MODEL and NOTATION first — fully — before any SQL or code
+> - Explain every component: entity types, attribute types, relationship types, constraints, cardinality
+> - Show what it looks like using ASCII diagrams, Mermaid diagrams, or markdown tables
+> - Use "how do you draw/model this" as the lens, not "how do you implement this"
+> - Walk through a concrete worked example end-to-end (e.g., draw the ER diagram step by step)
+> - Only bring in SQL or code at the END as a "how this maps to implementation" section
+> - Weak vs strong entities, participation constraints, multi-valued attributes — cover ALL building blocks
+
+> **For [LANGUAGE] topics (SQL, API patterns):**
+> - Teach syntax with annotated code examples
+> - Show real patterns in Java/Kotlin/PostgreSQL context
+> - Include gotchas and behavior differences
+
+> **For [ALGORITHMIC] topics:**
+> - Explain the mechanism step-by-step with a trace/walkthrough
+> - Show time/space complexity and WHY
+> - Code example comes after the concept is clear
+
+> **For [SYSTEM] topics (ACID, isolation, concurrency):**
+> - Explain the problem it solves first, then the mechanism
+> - Use scenarios showing what breaks without it
+> - Connect to PostgreSQL/FastPeer behavior where applicable
+
+> **For [DESIGN] topics:**
+> - Walk through the design process, not just the output
+> - Show class diagrams / component diagrams before any code
+
+**For ALL types, always include:**
+- Comparison table if there are multiple related concepts
+- Common patterns and when to choose each
+- Concrete worked example (using Java/Kotlin/Spring Boot/PostgreSQL where code is needed)
+
+**4. Important Variations & Trade-offs**
+- Different approaches and when to pick each
+- Skip ultra-rare edge cases unless they're common interview traps
+
+**5. Common Pitfalls**
+- What breaks in practice
+- One "silent failure" pattern that's easy to miss
+
+**6. Topic Linkage**
+- If we've covered previous topics in this session, explicitly connect:
+  "This relates to [Previous Topic] because..."
+
+---
+
+### STEP 2 — Interview Questions
+
+Give **8–10 interview questions** tagged by difficulty:
+- [L1] = Foundational — define/explain
+- [L2] = Mid-level — explain the why, identify the trade-off
+- [L3] = Senior — design decision, handle edge case
+
+For EACH question:
+- **Q:** The question
+- **Answer:** Key points a strong answer must hit (not a script)
+- **Why asked:** What the interviewer is probing for
+- **Common mistakes:** 1–2 answers that seem right but miss the point
+- **Example/Scenario:** Concrete case (Java/PostgreSQL context preferred)
+- **Follow-up:** One likely follow-up question
+
+---
+
+### STEP 3 — Quiz
+
+5–6 questions mixing:
+- 2–3 MCQs testing mechanism understanding (not just definitions)
+- 2–3 short-answer "What would happen if..." or "In this scenario, which approach and why?"
+- At least 1 question drawn from a FastPeer/Synq-like scenario
+- For **[CONCEPTUAL]** topics: at least 1 question asks me to draw or describe a diagram component
+
+Label each question with the concept it's testing.
+**Wait for my answers before continuing.**
+
+---
+
+### STEP 4 — Adaptive Feedback
+
+Score each answer, then:
+- **≥ 4/5 or 5/6:** Confirm understanding + 1 extension insight per strong answer → proceed
+- **< 4/5 or 3/6:** Re-teach weak areas using a DIFFERENT analogy/example → give 1–2 targeted re-quiz questions → then proceed
+- For every wrong answer: say what was wrong, why the right answer is right, what misconception it reveals
+
+---
+
+### STEP 5 — Teach-Back (30 seconds)
+Before moving on, ask:
+"Explain [core concept] in 2–3 sentences as if you're explaining it to a junior engineer."
+Give quick feedback on my explanation.
+
+---
+
+### STEP 6 — Spaced Recall (every 3rd topic)
+Every 3rd topic: before teaching the new one, cold-quiz me on ONE concept from a previously covered topic. No warning.
+
+---
+
+### STEP 7 — Next Topic
+When I say "next", move to the next topic. Repeat Steps 0–6.
+
+---
+
+## FORMAT RULES
+- Dense and direct — I'm taking notes
+- Use markdown: headers, tables, fenced code blocks, Mermaid diagrams
+- Code: Java or Kotlin by default; SQL for database topics
+- Full lesson (Steps 1–3): aim for quality over brevity — don't rush through conceptual topics
+- Never summarize what you're about to do — just do it
+- For diagrams: use \`\`\`mermaid or ASCII art — always prefer showing over describing
+
+---
+
+### START
+Begin with Topic 1. Run Step 0 first.`;
       }
 
       const roadmapData = [
