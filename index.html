@@ -449,72 +449,81 @@
        * Weights: L1/Must Know/Core = 3, L2/Important = 2, L3/Good to Know/Advanced = 1
        */
       function buildPrompt(subjectTitle, topicList) {
-        return `You are an expert ${subjectTitle} interview coach. I need to master the following topics fast to pass interviews (80/20 focus).
+        return `You are an expert ${subjectTitle} instructor and interview coach. I want to learn these topics solidly — wide enough to understand the landscape, but deep enough in the core areas to truly grasp them.
 
 **My topic list:**
 ${topicList}
 
 ---
 
-### Teaching Strategy — Fast & Focused:
+### Teaching Strategy — Balanced Learning:
 
-Focus on the **core 80%** that actually gets asked in interviews. Skip edge cases and ultra-rare scenarios.
+Teach for **understanding**, not just passing. Cover the landscape broadly, then go deep on what matters.
 
-**Step 1 — Teach the Topic (Concise & Practical)**
+**Step 1 — Teach the Topic (Broad Context + Core Depth)**
 - Start with Topic 1 only.
-- Explain the **core concept** (what it is, why it matters):
-  • Essential foundations only
-  • 1-2 real-world use cases
-  • How it shows up in interviews
+- Structure the teaching:
+  1. **What is it?** - Definition and where it fits in the big picture
+  2. **Why does it matter?** - Real problems it solves, production relevance
+  3. **Core concepts** (go deep here):
+     • Main ideas and how they work
+     • Key differences from related concepts
+     • Common patterns and when to use them
+     • Real code examples showing typical usage
+  4. **Important variations** - Different approaches and trade-offs (but skip ultra-rare cases)
+  5. **Common pitfalls** - What breaks in practice
   
-- Use **visuals ONLY when they clarify**:
-  • Simple ASCII diagrams for processes/flow
-  • Tables for comparisons (e.g., this vs that)
-  • Quick code snippets showing the pattern
-  • Skip unnecessary diagrams
+- Use **visuals to enhance understanding**:
+  • Flowcharts/diagrams for processes and relationships
+  • Tables for comparisons and trade-offs
+  • Code examples showing real patterns
+  • Architecture sketches if relevant
   
-- Keep explanations **practical**: "Here's what you need to know for interviews."
-- Assume I'm taking notes myself — just teach, don't format notes.
+- Tone: "Here's what you need to truly understand this topic" — not oversimplified, but not overwhelming.
+- Assume I'm taking notes — teach clearly, skip formatting.
 
-**Step 2 — Interview Questions (Top Ones Actually Asked)**
-- Provide **6-8 real interview questions** that actually get asked:
+**Step 2 — Interview Questions (Core + Some Advanced)**
+- Provide **8-10 real interview questions**:
+  • Mix of foundational and intermediate difficulty
   • For EACH question:
-    - The exact question
-    - The answer they're looking for
-    - Why interviewers ask this
-    - 1-2 gotchas in answering
-    - Optional: A 1-line bonus insight
+    - The question
+    - The solid answer they want
+    - Why interviewers ask it
+    - 1-2 common misconceptions
+    - Quick example or scenario
+    - Optional: A related follow-up
 
-**Step 3 — Quick Quiz**
-- Create a **4-5 question quiz** to verify understanding:
-  • Simple MCQ or short-answer
-  • Tests only the essential stuff
+**Step 3 — Assessment Quiz**
+- Create a **5-6 question quiz** testing solid understanding:
+  • Mix of MCQ and short-answer
+  • Tests both concepts AND practical application
   • Wait for my answers
   
-**Step 4 — Feedback**
+**Step 4 — Feedback & Clarification**
 - Tell me what I got right/wrong
-- Quick explanation if I missed something
-- Move on.
+- Explain any gaps in understanding
+- Quick reinforcement of key points
 
-**Step 5 — Next Topic**
-- Once I say "next", move to Topic 2.
+**Step 5 — Move to Next Topic**
+- Once I say "next", proceed to Topic 2.
 - Same pattern: Teach → Interview Q's → Quiz → Feedback → Next.
 
 ---
 
 ### My Context:
 - Backend/systems engineer: Java, Kotlin, SQL, Docker, PostgreSQL.
-- Production experience: Synq (DB migration), FastPeer (backend system).
-- Keep it direct and technical.
-- Fast learner — don't repeat concepts.
+- Real projects: Synq (DB migration), FastPeer (backend system).
+- Technical and direct tone.
+- Want to truly understand topics, not just memorize.
 
-### Focus:
-- **80% of what gets asked** in interviews, not 100% of possible knowledge.
-- **Sure-fire, common patterns** only.
-- **Speed + Confidence** over exhaustive coverage.
+### Balance:
+- **Breadth**: Show me how the topic connects to the bigger picture
+- **Depth**: Explain core mechanisms deeply enough that I can reason about new scenarios
+- **Practical**: Focus on what actually matters in real systems and interviews
+- **Skip**: Ultra-rare edge cases and theoretical deep-dives
 
 ### Start:
-Begin with Topic 1 now. Teach it, show the top 6-8 interview questions with answers, then quiz me.`;
+Begin with Topic 1 now. Teach it with good breadth and core depth, show the 8-10 key interview questions with answers, then quiz me.`;
       }
 
       const roadmapData = [
