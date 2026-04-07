@@ -449,87 +449,72 @@
        * Weights: L1/Must Know/Core = 3, L2/Important = 2, L3/Good to Know/Advanced = 1
        */
       function buildPrompt(subjectTitle, topicList) {
-        return `You are an expert ${subjectTitle} instructor and interview mentor. I am preparing for software engineering 
-placements and want to deeply master the following topics one at a time.
+        return `You are an expert ${subjectTitle} interview coach. I need to master the following topics fast to pass interviews (80/20 focus).
 
 **My topic list:**
 ${topicList}
 
 ---
 
-### Your Teaching Mission:
+### Teaching Strategy — Fast & Focused:
 
-You are NOT to provide surface-level introductions. Your job is to **go deep** into each topic with comprehensive, production-grade knowledge.
+Focus on the **core 80%** that actually gets asked in interviews. Skip edge cases and ultra-rare scenarios.
 
-**Step 1 — Deep Teaching**
-- Start with Topic 1 only. Do NOT jump ahead.
-- Provide an exhaustive, in-depth explanation that covers:
-  • **Foundational concepts** with detailed reasoning
-  • **Real-world applications** and practical use cases
-  • **Advanced aspects** that go beyond basics
-  • **Edge cases and gotchas** engineers encounter in production
-  • **Performance implications** and trade-offs
+**Step 1 — Teach the Topic (Concise & Practical)**
+- Start with Topic 1 only.
+- Explain the **core concept** (what it is, why it matters):
+  • Essential foundations only
+  • 1-2 real-world use cases
+  • How it shows up in interviews
   
-- Use **multiple teaching tools** to make it crystal clear:
-  • **ASCII diagrams, flowcharts, trees** to visualize concepts
-  • **Tables and comparisons** (pros/cons, use cases, complexity)
-  • **Code examples** showing real patterns and implementations
-  • **Architecture diagrams** if relevant
-  • **Timeline/progression diagrams** if applicable
-  • Any other visual aids that enhance understanding
+- Use **visuals ONLY when they clarify**:
+  • Simple ASCII diagrams for processes/flow
+  • Tables for comparisons (e.g., this vs that)
+  • Quick code snippets showing the pattern
+  • Skip unnecessary diagrams
   
-- Make explanations **interview-focused**: Connect concepts to common interview questions and real scenarios.
-- Use examples from **PostgreSQL, backend systems, distributed systems** where applicable.
-- Assume I take my own notes — focus on teaching, not on formatting note blocks.
+- Keep explanations **practical**: "Here's what you need to know for interviews."
+- Assume I'm taking notes myself — just teach, don't format notes.
 
-**Step 2 — Interview Questions with Detailed Answers**
-- After the deep teaching, provide **8-12 interview questions** for this topic:
-  • Mix of conceptual, scenario-based, and implementation questions
-  • Include both basic and advanced difficulty levels
-  • For EACH question, provide:
-    - The question itself
-    - A detailed, comprehensive answer
-    - Why this question matters in interviews
-    - Common pitfalls in answering
-    - Real-world connection/example
-    - Follow-up questions an interviewer might ask
+**Step 2 — Interview Questions (Top Ones Actually Asked)**
+- Provide **6-8 real interview questions** that actually get asked:
+  • For EACH question:
+    - The exact question
+    - The answer they're looking for
+    - Why interviewers ask this
+    - 1-2 gotchas in answering
+    - Optional: A 1-line bonus insight
 
-**Step 3 — Short Assessment Quiz**
-- After interview questions, create a **5-7 question quiz** to test my understanding:
-  • Mix of MCQ (with explanations for each option) and short-answer
-  • Questions should test both conceptual understanding and practical application
-  • Wait for my answers before giving feedback
+**Step 3 — Quick Quiz**
+- Create a **4-5 question quiz** to verify understanding:
+  • Simple MCQ or short-answer
+  • Tests only the essential stuff
+  • Wait for my answers
   
-**Step 4 — Quiz Feedback & Corrections**
-- After I submit answers, provide:
-  • Correctness feedback
-  • Detailed explanations for my mistakes (if any)
-  • Reinforcement of key concepts
-  • Additional insights or clarifications
+**Step 4 — Feedback**
+- Tell me what I got right/wrong
+- Quick explanation if I missed something
+- Move on.
 
-**Step 5 — Move Forward**
-- Only after I say "next", "continue", "move on", or "proceed" should you go to Topic 2.
-- Follow the same pattern for each topic: Deep Teaching → Visual Aids → Interview Questions (with answers) → Quiz → Feedback → Next Topic.
+**Step 5 — Next Topic**
+- Once I say "next", move to Topic 2.
+- Same pattern: Teach → Interview Q's → Quiz → Feedback → Next.
 
 ---
 
-### My Context (personalize explanations accordingly):
-- I use PostgreSQL heavily in production projects (Synq — a DB migration CLI tool, 
-  FastPeer — a backend system).
-- I'm a backend/systems engineer comfortable with Java, Kotlin, SQL, Docker, distributed systems.
-- Prefer practical, production-relevant explanations over pure theory.
-- Keep the tone direct, technical, and in-depth — no hand-holding or surface-level coverage.
-- Show me how these topics apply to real engineering challenges.
+### My Context:
+- Backend/systems engineer: Java, Kotlin, SQL, Docker, PostgreSQL.
+- Production experience: Synq (DB migration), FastPeer (backend system).
+- Keep it direct and technical.
+- Fast learner — don't repeat concepts.
 
-### Important Reminders:
-- **Depth > Breadth**: If covering a topic requires going very deep into 5-6 related subtopics, do that fully.
-- **Visual Learning**: Use ASCII art, diagrams, tables, and structured comparisons liberally.
-- **No Skipping**: Don't say "I won't explain X because it's beyond scope" — if it's part of mastering the topic, cover it.
-- **Interview-Ready**: Every explanation should prepare me to confidently answer tough follow-up questions.
+### Focus:
+- **80% of what gets asked** in interviews, not 100% of possible knowledge.
+- **Sure-fire, common patterns** only.
+- **Speed + Confidence** over exhaustive coverage.
 
 ### Start:
-Begin with Topic 1 now. Teach it deeply with visuals and examples, then provide interview questions with detailed answers, 
-then give me the assessment quiz.`;
+Begin with Topic 1 now. Teach it, show the top 6-8 interview questions with answers, then quiz me.`;
       }
 
       const roadmapData = [
